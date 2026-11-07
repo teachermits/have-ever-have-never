@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Present Perfect: Have You Ever...?</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Smooth visual transitions */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pulse ring for recording */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .animate-recording { animation: pulse-ring 1.8s infinite ease-in-out; }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="h-full flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
+
+    <!-- TOP HEADER / NAVIGATION -->
+    <header class="bg-slate-950/80 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                        <i class="fa-solid fa-comments text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="font-bold text-lg text-slate-100 tracking-tight">Present Perfect Studio</h1>
+                            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">CEFR A2</span>
+                        </div>
+                        <p class="text-xs text-slate-400 hidden sm:block">Mastering "Have you ever...?" & "I have never..."</p>
+                    </div>
+                </div>
+
+                <!-- Score & Progress Indicator -->
+                <div class="flex items-center space-x-4">
+                    <!-- Student Info Badge -->
+                    <div id="header-student-badge" class="hidden sm:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs text-slate-300">
+                        <i class="fa-solid fa-user-check text-emerald-400"></i>
+                        <span id="header-student-name" class="font-medium">Student</span>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center gap-3">
+                        <div class="text-xs text-slate-400">Total Score</div>
+                        <div class="text-base font-bold text-amber-400 flex items-center gap-1">
+                            <i class="fa-solid fa-star text-xs"></i>
+                            <span id="total-score-display">0</span> / 24
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- STAGE PROGRESS / TAB BAR -->
+    <div class="bg-slate-900 border-b border-slate-800/80 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between overflow-x-auto py-2.5 no-scrollbar">
+                <nav class="flex space-x-2 sm:space-x-4">
+                    <button onclick="switchTab('phase1')" id="tab-phase1" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 bg-brand-600 text-white shadow-md shadow-brand-600/20">
+                        <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">1</span>
+                        Grammar Formulas
+                    </button>
+                    <button onclick="switchTab('phase2')" id="tab-phase2" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+                        <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400">2</span>
+                        Reading Practice (8)
+                    </button>
+                    <button onclick="switchTab('phase3')" id="tab-phase3" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+                        <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400">3</span>
+                        Writing Practice (8)
+                    </button>
+                    <button onclick="switchTab('phase4')" id="tab-phase4" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+                        <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400">4</span>
+                        Speaking Studio (8)
+                    </button>
+                    <button onclick="switchTab('summary')" id="tab-summary" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-award text-amber-400"></i>
+                        Certificate
+                    </button>
+                </nav>
+
+                <!-- Quick Action Buttons for Reports -->
+                <div class="flex items-center gap-2 ml-4">
+                    <button onclick="openSignInModal123()" class="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-invoice"></i> Act 1–3 Report
+                    </button>
+                    <button onclick="openSignInModal4()" class="px-3 py-1.5 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-microphone-lines"></i> Act 4 Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTENT -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================================= -->
+        <!-- PHASE 1: GRAMMAR FORMULAS & VISUAL RULES -->
+        <!-- ========================================================================= -->
+        <div id="phase1" class="tab-content active space-y-8">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 border border-brand-500/20 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="max-w-3xl space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-brand-500/10 border border-brand-500/30 text-brand-300 text-xs font-mono uppercase tracking-wider">
+                        Phase 1: Concept & Formula Blueprint
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Present Perfect for Life Experiences</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Use the Present Perfect tense to talk about experiences in your life up to right now. We do <strong>not</strong> specify the exact time when something happened.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formula Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- 1. Question Formula -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-brand-500/40 transition-all space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">1</span>
+                            <h3 class="font-bold text-lg text-slate-100">Asking About Experiences</h3>
+                        </div>
+                        <span class="text-xs font-mono text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded">Question</span>
+                    </div>
+                    
+                    <!-- Visual Formula Box -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 font-bold">Have</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-slate-200">you</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-bold">EVER</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold">V3 (Past Participle)</span>
+                            <span class="text-slate-400">+ ... ?</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p class="font-medium text-slate-200">Example:</p>
+                        <p class="italic bg-slate-950/50 p-3 rounded-lg border border-slate-800/80 text-blue-200">
+                            "<strong>Have</strong> you <strong>ever</strong> <span class="text-emerald-400">flown</span> on a helicopter?"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Negative Answer Formula -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-brand-500/40 transition-all space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">2</span>
+                            <h3 class="font-bold text-lg text-slate-100">Zero Experience ("Never")</h3>
+                        </div>
+                        <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded">Negative</span>
+                    </div>
+                    
+                    <!-- Visual Formula Box -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-slate-200">I</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 font-bold">HAVE</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-bold">NEVER</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold">V3 (Past Participle)</span>
+                            <span class="text-slate-400">+ ...</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p class="font-medium text-slate-200">Example:</p>
+                        <p class="italic bg-slate-950/50 p-3 rounded-lg border border-slate-800/80 text-amber-200">
+                            "I <strong>have never</strong> <span class="text-emerald-400">eaten</span> raw fish."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3. Affirmative Short Answer -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-brand-500/40 transition-all space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">3</span>
+                            <h3 class="font-bold text-lg text-slate-100">Affirmative Short Answer</h3>
+                        </div>
+                        <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">Yes Response</span>
+                    </div>
+                    
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-sm text-emerald-300 font-semibold">
+                        Yes, I have. <span class="text-xs text-slate-400 font-normal font-sans block mt-1">(Optional details in Past Simple: "I visited Paris in 2022.")</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        💡 <strong>Key Rule:</strong> Do not use contractions in short positive answers (Say "Yes, I have", NOT "Yes, I've").
+                    </p>
+                </div>
+
+                <!-- 4. Negative Short Answer -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-brand-500/40 transition-all space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-sm">4</span>
+                            <h3 class="font-bold text-lg text-slate-100">Negative Short Answer</h3>
+                        </div>
+                        <span class="text-xs font-mono text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded">No Response</span>
+                    </div>
+                    
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-sm text-rose-300 font-semibold">
+                        No, I haven't. <span class="text-xs text-slate-400 font-normal font-sans block mt-1">(Or full negative: "No, I have never tried it.")</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        💡 <strong>Key Rule:</strong> "Haven't" is the contraction of "have not". "Never" makes the sentence negative automatically.
+                    </p>
+                </div>
+            </div>
+
+            <!-- V3 Verb Reference Table -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark text-brand-400"></i> Common A2 Past Participles (V3 Form)
+                    </h3>
+                    <span class="text-xs text-slate-400">Regular & Irregular Quick Reference</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">be &rarr;</span> <strong class="text-emerald-400">been</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">eat &rarr;</span> <strong class="text-emerald-400">eaten</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">fly &rarr;</span> <strong class="text-emerald-400">flown</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">ride &rarr;</span> <strong class="text-emerald-400">ridden</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">speak &rarr;</span> <strong class="text-emerald-400">spoken</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">lose &rarr;</span> <strong class="text-emerald-400">lost</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">sleep &rarr;</span> <strong class="text-emerald-400">slept</strong></div>
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800"><span class="text-slate-400">drive &rarr;</span> <strong class="text-emerald-400">driven</strong></div>
+                </div>
+                <div class="pt-4 flex justify-end">
+                    <button onclick="switchTab('phase2')" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-brand-600/30 flex items-center gap-2">
+                        Start Reading Practice <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- PHASE 2: READING & COMPREHENSION PRACTICE (8 ITEMS) -->
+        <!-- ========================================================================= -->
+        <div id="phase2" class="tab-content space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800">
+                <div>
+                    <span class="text-xs font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded">Phase 2: Contextual Reading</span>
+                    <h2 class="text-xl font-bold text-white mt-1">Adult Life Scenario Analysis</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm">Read each dialogue or mini-biography, then select the correct comprehension answer.</p>
+                </div>
+                <div class="text-sm font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+                    Completed: <span id="p2-progress-count" class="text-brand-400 font-bold">0</span> / 8
+                </div>
+            </div>
+
+            <!-- Item Container Grid -->
+            <div id="reading-items-container" class="space-y-6">
+                <!-- Dynamically Rendered Reading Cards -->
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+                <button onclick="switchTab('phase1')" class="px-5 py-2.5 bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium rounded-xl text-sm transition-all">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Formulas
+                </button>
+                <button onclick="switchTab('phase3')" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-brand-600/30">
+                    Proceed to Writing Practice <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- PHASE 3: WRITING PRACTICE (8 ITEMS) -->
+        <!-- ========================================================================= -->
+        <div id="phase3" class="tab-content space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800">
+                <div>
+                    <span class="text-xs font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded">Phase 3: Production & Syntax</span>
+                    <h2 class="text-xl font-bold text-white mt-1">Sentence Writing Workbench</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm">Type full grammatical sentences using the provided prompts. Real-time AI checks grammar, auxiliary verbs, and V3 forms.</p>
+                </div>
+                <div class="text-sm font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+                    Completed: <span id="p3-progress-count" class="text-brand-400 font-bold">0</span> / 8
+                </div>
+            </div>
+
+            <div id="writing-items-container" class="space-y-6">
+                <!-- Dynamically Rendered Writing Cards -->
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+                <button onclick="switchTab('phase2')" class="px-5 py-2.5 bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium rounded-xl text-sm transition-all">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Reading
+                </button>
+                <button onclick="switchTab('phase4')" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-brand-600/30">
+                    Proceed to Speaking Studio <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- PHASE 4: SPEAKING STUDIO — LISTEN & RECORD (8 ITEMS) -->
+        <!-- ========================================================================= -->
+        <div id="phase4" class="tab-content space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded">Phase 4: Dedicated Speaking Assessment</span>
+                        <span id="act4-student-tag" class="hidden text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-mono"></span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mt-1">Listen & Record Practice (Separated Evaluation)</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm">Listen to the question audio prompt, then record your spoken answer. Sign in below for an independent speech report.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openSignInModal4()" class="px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold rounded-xl text-xs transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-id-card"></i> Sign In / Act 4 Report
+                    </button>
+                    <div class="text-sm font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+                        Completed: <span id="p4-progress-count" class="text-brand-400 font-bold">0</span> / 8
+                    </div>
+                </div>
+            </div>
+
+            <div id="speaking-items-container" class="space-y-6">
+                <!-- Dynamically Rendered Speaking Cards -->
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+                <button onclick="switchTab('phase3')" class="px-5 py-2.5 bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium rounded-xl text-sm transition-all">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Writing Practice
+                </button>
+                <button onclick="switchTab('summary')" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-lg shadow-amber-500/20">
+                    View Summary & Certificate <i class="fa-solid fa-award ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SUMMARY & CERTIFICATE OF COMPLETION -->
+        <!-- ========================================================================= -->
+        <div id="summary" class="tab-content space-y-6">
+            <div class="bg-gradient-to-br from-slate-900 via-brand-950/60 to-slate-900 border border-brand-500/30 rounded-2xl p-6 sm:p-10 space-y-8 shadow-2xl relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-800 pb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 text-3xl shadow-xl shadow-amber-500/20">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">CEFR A2 Proficiency</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Certificate of Achievement</h2>
+                            <p class="text-slate-400 text-xs sm:text-sm">Present Perfect Tense Mastery ("Have you ever...?" & "I have never...")</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scores Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center space-y-1">
+                        <div class="text-xs text-slate-400 font-mono">Phase 2: Reading</div>
+                        <div id="summary-reading-score" class="text-2xl font-extrabold text-blue-400">0 / 8</div>
+                    </div>
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center space-y-1">
+                        <div class="text-xs text-slate-400 font-mono">Phase 3: Writing</div>
+                        <div id="summary-writing-score" class="text-2xl font-extrabold text-emerald-400">0 / 8</div>
+                    </div>
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center space-y-1">
+                        <div class="text-xs text-slate-400 font-mono">Phase 4: Speaking</div>
+                        <div id="summary-speaking-score" class="text-2xl font-extrabold text-amber-400">0 / 8</div>
+                    </div>
+                </div>
+
+                <!-- Pedagogical Evaluation Box -->
+                <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 text-slate-300 text-sm leading-relaxed">
+                    <div id="certificate-eval-text" class="text-slate-200">
+                        Complete practice items across all stages to generate your final pedagogical evaluation.
+                    </div>
+                </div>
+
+                <!-- Certificate Actions -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-800/80">
+                    <button onclick="resetAllProgress()" class="text-xs text-slate-400 hover:text-rose-400 flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-rotate-right"></i> Reset All Progress
+                    </button>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <button onclick="window.print()" class="w-full sm:w-auto px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> Print Full Certificate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALS: SIGN-IN & RESULTS REPORTS -->
+    <!-- ========================================================================= -->
+
+    <!-- 1. SIGN IN MODAL FOR ACTIVITIES 1, 2, AND 3 -->
+    <div id="modal-signin-123" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6 relative">
+            <button onclick="closeModal('modal-signin-123')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="space-y-2 text-center">
+                <div class="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Sign In: Activities 1, 2 & 3</h3>
+                <p class="text-xs text-slate-400">Enter student information to track progress and generate a detailed results report with scores and date stamp.</p>
+            </div>
+
+            <form onsubmit="handleSignIn123Submit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Student Full Name *</label>
+                    <input type="text" id="signin-123-name" required placeholder="e.g. Maria Gonzalez" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Student ID / Class Group (Optional)</label>
+                    <input type="text" id="signin-123-id" placeholder="e.g. ESL-A2-2026" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 outline-none">
+                </div>
+                <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-blue-600/30">
+                    Save Sign-In & View Act 1–3 Report
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. RESULTS REPORT MODAL FOR ACTIVITIES 1, 2, AND 3 -->
+    <div id="modal-report-123" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal('modal-report-123')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="border-b border-slate-800 pb-4 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono text-blue-400 uppercase tracking-wider font-semibold">Evaluation Report</span>
+                    <h3 class="text-2xl font-bold text-white">Activities 1, 2 & 3 Results</h3>
+                    <p class="text-xs text-slate-400 mt-1">Formulas, Reading Comprehension & Writing Production</p>
+                </div>
+                <div class="text-right">
+                    <div id="report-123-date" class="text-xs font-mono text-slate-400">Date: --</div>
+                    <div id="report-123-student" class="text-sm font-semibold text-blue-300">Student: --</div>
+                </div>
+            </div>
+
+            <!-- Score Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                    <div class="text-xs text-slate-400 mb-1">Reading (Phase 2)</div>
+                    <div id="report-123-read-score" class="text-xl font-bold text-blue-400">0 / 8</div>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                    <div class="text-xs text-slate-400 mb-1">Writing (Phase 3)</div>
+                    <div id="report-123-write-score" class="text-xl font-bold text-emerald-400">0 / 8</div>
+                </div>
+                <div class="bg-gradient-to-br from-blue-950 to-slate-950 p-4 rounded-xl border border-blue-500/30 text-center">
+                    <div class="text-xs text-blue-300 font-semibold mb-1">Overall Percentage</div>
+                    <div id="report-123-percentage" class="text-2xl font-extrabold text-amber-400">0%</div>
+                </div>
+            </div>
+
+            <!-- Breakdown -->
+            <div class="space-y-3">
+                <h4 class="text-sm font-bold text-slate-200">Detailed Performance Breakdown</h4>
+                <div id="report-123-breakdown" class="space-y-2 text-xs sm:text-sm max-h-60 overflow-y-auto pr-1">
+                    <!-- Dynamic List -->
+                </div>
+            </div>
+
+            <div class="pt-4 flex justify-between items-center border-t border-slate-800">
+                <button onclick="openSignInModal123()" class="text-xs text-slate-400 hover:text-slate-200 underline">
+                    Change Student Info
+                </button>
+                <button onclick="window.print()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i> Print Act 1–3 Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SEPARATED SIGN IN MODAL FOR ACTIVITY 4 (SPEAKING STUDIO) -->
+    <div id="modal-signin-4" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6 relative">
+            <button onclick="closeModal('modal-signin-4')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="space-y-2 text-center">
+                <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-microphone"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Activity 4 Speaking Sign In</h3>
+                <p class="text-xs text-slate-400">Sign in specifically for the Listen & Record Audio Assessment to generate an independent Speech & Voice Feedback Report.</p>
+            </div>
+
+            <form onsubmit="handleSignIn4Submit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Student Full Name *</label>
+                    <input type="text" id="signin-4-name" required placeholder="e.g. Maria Gonzalez" class="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Student ID / Speaking Session (Optional)</label>
+                    <input type="text" id="signin-4-id" placeholder="e.g. SPEAK-A2-01" class="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 outline-none">
+                </div>
+                <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-lg shadow-amber-500/20">
+                    Save Sign-In & View Act 4 Report
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. SEPARATED REPORT & FEEDBACK MODAL FOR ACTIVITY 4 -->
+    <div id="modal-report-4" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal('modal-report-4')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="border-b border-slate-800 pb-4 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono text-amber-400 uppercase tracking-wider font-semibold">Separated Audio Assessment Report</span>
+                    <h3 class="text-2xl font-bold text-white">Activity 4: Speaking Results & Feedback</h3>
+                    <p class="text-xs text-slate-400 mt-1">Listen & Record Voice Evaluation</p>
+                </div>
+                <div class="text-right">
+                    <div id="report-4-date" class="text-xs font-mono text-slate-400">Date: --</div>
+                    <div id="report-4-student" class="text-sm font-semibold text-amber-300">Student: --</div>
+                </div>
+            </div>
+
+            <!-- Speaking Score Banner -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                    <div class="text-xs text-slate-400 mb-1">Spoken Accuracy Items</div>
+                    <div id="report-4-speak-score" class="text-2xl font-bold text-amber-400">0 / 8</div>
+                </div>
+                <div class="bg-gradient-to-br from-amber-950/50 to-slate-950 p-4 rounded-xl border border-amber-500/30 text-center">
+                    <div class="text-xs text-amber-300 font-semibold mb-1">Speaking Score Percentage</div>
+                    <div id="report-4-percentage" class="text-3xl font-extrabold text-amber-400">0%</div>
+                </div>
+            </div>
+
+            <!-- Voice Transcripts & Feedback Audit -->
+            <div class="space-y-3">
+                <h4 class="text-sm font-bold text-slate-200">Item-by-Item Voice Transcripts & Pedagogical Feedback</h4>
+                <div id="report-4-breakdown" class="space-y-3 text-xs sm:text-sm max-h-64 overflow-y-auto pr-1">
+                    <!-- Dynamic Transcripts List -->
+                </div>
+            </div>
+
+            <div class="pt-4 flex justify-between items-center border-t border-slate-800">
+                <button onclick="openSignInModal4()" class="text-xs text-slate-400 hover:text-slate-200 underline">
+                    Change Speaking Student Info
+                </button>
+                <button onclick="window.print()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i> Print Act 4 Speaking Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-900 py-6 mt-auto text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Interactive ESL Pedagogical Tool for Adult Learners (CEFR A2 Standard)</p>
+        </div>
+    </footer>
+
+    <!-- JS APP LOGIC -->
+    <script>
+        /* =========================================================================
+           DATA CURRICULUM SPECIFICATIONS (EXACT 8 ITEMS PER PHASE)
+           ========================================================================= */
+
+        const READING_DATA = [
+            {
+                id: 1,
+                dialogue: "Sarah has worked in marketing for ten years, but she has never managed a remote team.",
+                question: "Has Sarah ever led a remote team?",
+                options: [
+                    "Yes, she has managed a remote team for ten years.",
+                    "No, she has never managed a remote team.",
+                    "Yes, she manages remote teams in marketing."
+                ],
+                correctIndex: 1,
+                explanation: "The text states 'she has never managed a remote team'."
+            },
+            {
+                id: 2,
+                dialogue: "Carlos loves food. He has eaten sushi in Tokyo and tapas in Madrid, but he has never tried Mexican tacos.",
+                question: "Has Carlos ever eaten Mexican tacos?",
+                options: [
+                    "Yes, he ate tacos in Madrid.",
+                    "No, he has never tried them.",
+                    "Yes, he tried tacos in Tokyo."
+                ],
+                correctIndex: 1,
+                explanation: "The sentence specifies 'he has never tried Mexican tacos'."
+            },
+            {
+                id: 3,
+                dialogue: "Mark works in international sales. He has flown on planes over thirty times, but he has never been on a cruise ship.",
+                question: "Has Mark ever traveled on a cruise ship?",
+                options: [
+                    "No, he has never been on a cruise ship.",
+                    "Yes, he has traveled by cruise ship thirty times.",
+                    "Yes, he works on a cruise ship."
+                ],
+                correctIndex: 0,
+                explanation: "Mark has flown on planes, but 'has never been on a cruise ship'."
+            },
+            {
+                id: 4,
+                dialogue: "Elena: 'Have you ever presented to executive directors?' — David: 'Yes, I have presented to directors twice.'",
+                question: "Has David ever presented to executive directors?",
+                options: [
+                    "No, he has never presented to directors.",
+                    "Yes, he has presented twice.",
+                    "Yes, he presents every week."
+                ],
+                correctIndex: 1,
+                explanation: "David confirms: 'Yes, I have presented to directors twice.'"
+            },
+            {
+                id: 5,
+                dialogue: "Nina lives in Canada. She has seen snow many times, but she has never seen a desert in person.",
+                question: "Has Nina ever seen a desert?",
+                options: [
+                    "Yes, she saw a desert in Canada.",
+                    "No, she has never seen a desert.",
+                    "Yes, she has seen deserts many times."
+                ],
+                correctIndex: 1,
+                explanation: "The passage notes 'she has never seen a desert in person'."
+            },
+            {
+                id: 6,
+                dialogue: "Tom: 'Have you ever lost your keys?' — Anna: 'No, I have never lost my keys, but I've lost my phone.'",
+                question: "Has Anna ever lost her house keys?",
+                options: [
+                    "Yes, she lost her house keys.",
+                    "No, she has never lost her keys.",
+                    "No, but she lost her car."
+                ],
+                correctIndex: 1,
+                explanation: "Anna says: 'No, I have never lost my keys'."
+            },
+            {
+                id: 7,
+                dialogue: "Julian is a software developer. He has coded in Python for 5 years, but he has never built a mobile app.",
+                question: "Has Julian ever created a mobile application?",
+                options: [
+                    "No, he has never built one.",
+                    "Yes, he built mobile apps for 5 years.",
+                    "Yes, he created a Python app."
+                ],
+                correctIndex: 0,
+                explanation: "The biography states 'he has never built a mobile app'."
+            },
+            {
+                id: 8,
+                dialogue: "Rachel is an athlete. She has run three marathons, but she has never won a trophy.",
+                question: "Has Rachel ever won a trophy in a marathon?",
+                options: [
+                    "Yes, she won three trophies.",
+                    "No, she has never won a trophy.",
+                    "Yes, she won her last marathon."
+                ],
+                correctIndex: 1,
+                explanation: "Rachel ran 3 marathons, 'but she has never won a trophy'."
+            }
+        ];
+
+        const WRITING_DATA = [
+            {
+                id: 1,
+                prompt: "Question Formation",
+                cues: "(you / ever / visit / a museum in Europe)",
+                targetPattern: /^(have you ever visited a museum in europe\??)$/i,
+                sampleAnswer: "Have you ever visited a museum in Europe?",
+                type: "question"
+            },
+            {
+                id: 2,
+                prompt: "Negative Statement",
+                cues: "(I / never / ride / a motorcycle)",
+                targetPattern: /^(i have never ridden a motorcycle\.?)$/i,
+                sampleAnswer: "I have never ridden a motorcycle.",
+                type: "negative"
+            },
+            {
+                id: 3,
+                prompt: "Question Formation",
+                cues: "(you / ever / speak / to a famous person)",
+                targetPattern: /^(have you ever spoken to a famous person\??)$/i,
+                sampleAnswer: "Have you ever spoken to a famous person?",
+                type: "question"
+            },
+            {
+                id: 4,
+                prompt: "Negative Statement",
+                cues: "(I / never / lose / my wallet)",
+                targetPattern: /^(i have never lost my wallet\.?)$/i,
+                sampleAnswer: "I have never lost my wallet.",
+                type: "negative"
+            },
+            {
+                id: 5,
+                prompt: "Question Formation",
+                cues: "(you / ever / cook / dinner for ten people)",
+                targetPattern: /^(have you ever cooked dinner for ten people\??)$/i,
+                sampleAnswer: "Have you ever cooked dinner for ten people?",
+                type: "question"
+            },
+            {
+                id: 6,
+                prompt: "Negative Statement",
+                cues: "(I / never / break / a bone)",
+                targetPattern: /^(i have never broken a bone\.?)$/i,
+                sampleAnswer: "I have never broken a bone.",
+                type: "negative"
+            },
+            {
+                id: 7,
+                prompt: "Question Formation",
+                cues: "(you / ever / sleep / in a tent)",
+                targetPattern: /^(have you ever slept in a tent\??)$/i,
+                sampleAnswer: "Have you ever slept in a tent?",
+                type: "question"
+            },
+            {
+                id: 8,
+                prompt: "Open Writing Prompt",
+                cues: "Answer honestly in one full sentence: \"Have you ever driven an electric vehicle?\"",
+                targetPattern: /^(yes,?\s*i have( driven an electric vehicle)?\.?|no,?\s*i have never driven an electric vehicle\.?|i have never driven an electric vehicle\.?)$/i,
+                sampleAnswer: "Yes, I have driven an electric vehicle. / No, I have never driven an electric vehicle.",
+                type: "open"
+            }
+        ];
+
+        const SPEAKING_DATA = [
+            {
+                id: 1,
+                audioText: "Have you ever changed a flat tire?",
+                targetStructure: "Yes, I have changed a flat tire. / No, I have never changed a flat tire.",
+                v3Check: "changed",
+                auxiliary: "have"
+            },
+            {
+                id: 2,
+                audioText: "Have you ever missed an important flight?",
+                targetStructure: "Yes, I have missed a flight. / No, I have never missed a flight.",
+                v3Check: "missed",
+                auxiliary: "have"
+            },
+            {
+                id: 3,
+                audioText: "Have you ever worked late on a weekend?",
+                targetStructure: "Yes, I have worked late on a weekend. / No, I have never worked late.",
+                v3Check: "worked",
+                auxiliary: "have"
+            },
+            {
+                id: 4,
+                audioText: "Have you ever eaten raw fish or seafood?",
+                targetStructure: "Yes, I have eaten raw fish. / No, I have never eaten raw fish.",
+                v3Check: "eaten",
+                auxiliary: "have"
+            },
+            {
+                id: 5,
+                audioText: "Have you ever lost your passport in another country?",
+                targetStructure: "Yes, I have lost my passport. / No, I have never lost my passport.",
+                v3Check: "lost",
+                auxiliary: "have"
+            },
+            {
+                id: 6,
+                audioText: "Have you ever won a contest or lottery?",
+                targetStructure: "Yes, I have won a contest. / No, I have never won a contest.",
+                v3Check: "won",
+                auxiliary: "have"
+            },
+            {
+                id: 7,
+                audioText: "Have you ever spoken English in a business meeting?",
+                targetStructure: "Yes, I have spoken English in a meeting. / No, I have never spoken English in a meeting.",
+                v3Check: "spoken",
+                auxiliary: "have"
+            },
+            {
+                id: 8,
+                audioText: "Have you ever slept on a long-distance train?",
+                targetStructure: "Yes, I have slept on a train. / No, I have never slept on a train.",
+                v3Check: "slept",
+                auxiliary: "have"
+            }
+        ];
+
+        /* =========================================================================
+           APPLICATION STATE & SCORE TRACKING
+           ========================================================================= */
+        const state = {
+            readingScores: {},
+            writingScores: {},
+            speakingScores: {},
+            activeTab: 'phase1',
+            recordingIndex: null,
+            student123: {
+                name: '',
+                classId: '',
+                date: null
+            },
+            student4: {
+                name: '',
+                classId: '',
+                date: null
+            }
+        };
+
+        /* =========================================================================
+           SIGN-IN & REPORTING MODAL UTILITIES
+           ========================================================================= */
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        }
+
+        function openSignInModal123() {
+            if (state.student123.name) {
+                showReport123();
+            } else {
+                openModal('modal-signin-123');
+            }
+        }
+
+        function handleSignIn123Submit(e) {
+            e.preventDefault();
+            const name = document.getElementById('signin-123-name').value.trim();
+            const classId = document.getElementById('signin-123-id').value.trim();
+
+            if (!name) return;
+
+            state.student123 = {
+                name: name,
+                classId: classId || 'N/A',
+                date: new Date().toLocaleString()
+            };
+
+            updateHeaderStudentBadge();
+            closeModal('modal-signin-123');
+            showReport123();
+        }
+
+        function showReport123() {
+            if (!state.student123.name) {
+                openModal('modal-signin-123');
+                return;
+            }
+
+            const readScore = Object.values(state.readingScores).reduce((a, b) => a + b, 0);
+            const writeScore = Object.values(state.writingScores).reduce((a, b) => a + b, 0);
+            const totalScore123 = readScore + writeScore;
+            const maxScore123 = 16; // 8 reading + 8 writing
+            const percentage = ((totalScore123 / maxScore123) * 100).toFixed(1);
+
+            document.getElementById('report-123-student').innerText = `Student: ${state.student123.name} (${state.student123.classId})`;
+            document.getElementById('report-123-date').innerText = `Date: ${state.student123.date || new Date().toLocaleDateString()}`;
+            document.getElementById('report-123-read-score').innerText = `${readScore} / 8`;
+            document.getElementById('report-123-write-score').innerText = `${writeScore} / 8`;
+            document.getElementById('report-123-percentage').innerText = `${percentage}%`;
+
+            // Breakdown List
+            const breakdownContainer = document.getElementById('report-123-breakdown');
+            let breakdownHtml = `<div class="font-semibold text-slate-300 border-b border-slate-800 pb-1">Phase 2: Reading Comprehension (${readScore}/8)</div>`;
+
+            READING_DATA.forEach(item => {
+                const status = state.readingScores[item.id] === 1;
+                breakdownHtml += `
+                    <div class="flex items-center justify-between p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-300 truncate max-w-xs">Item ${item.id}: ${item.question}</span>
+                        <span class="${status ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${status ? '✅ Correct (100%)' : '💡 Review Needed (0%)'}</span>
+                    </div>
+                `;
+            });
+
+            breakdownHtml += `<div class="font-semibold text-slate-300 border-b border-slate-800 pb-1 mt-3">Phase 3: Writing Production (${writeScore}/8)</div>`;
+
+            WRITING_DATA.forEach(item => {
+                const status = state.writingScores[item.id] === 1;
+                breakdownHtml += `
+                    <div class="flex items-center justify-between p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-300 truncate max-w-xs">Item ${item.id}: ${item.prompt} ${item.cues}</span>
+                        <span class="${status ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${status ? '✅ Accurate (100%)' : '💡 Review Needed (0%)'}</span>
+                    </div>
+                `;
+            });
+
+            breakdownContainer.innerHTML = breakdownHtml;
+            openModal('modal-report-123');
+        }
+
+        /* Activity 4 Separated Sign-In & Report */
+        function openSignInModal4() {
+            if (state.student4.name) {
+                showReport4();
+            } else {
+                openModal('modal-signin-4');
+            }
+        }
+
+        function handleSignIn4Submit(e) {
+            e.preventDefault();
+            const name = document.getElementById('signin-4-name').value.trim();
+            const classId = document.getElementById('signin-4-id').value.trim();
+
+            if (!name) return;
+
+            state.student4 = {
+                name: name,
+                classId: classId || 'N/A',
+                date: new Date().toLocaleString()
+            };
+
+            const tag = document.getElementById('act4-student-tag');
+            if (tag) {
+                tag.innerText = `Signed In: ${name}`;
+                tag.classList.remove('hidden');
+            }
+
+            closeModal('modal-signin-4');
+            showReport4();
+        }
+
+        function showReport4() {
+            if (!state.student4.name) {
+                openModal('modal-signin-4');
+                return;
+            }
+
+            const speakScore = Object.values(state.speakingScores).reduce((a, b) => a + b, 0);
+            const percentage = ((speakScore / 8) * 100).toFixed(1);
+
+            document.getElementById('report-4-student').innerText = `Student: ${state.student4.name} (${state.student4.classId})`;
+            document.getElementById('report-4-date').innerText = `Date: ${state.student4.date || new Date().toLocaleDateString()}`;
+            document.getElementById('report-4-speak-score').innerText = `${speakScore} / 8`;
+            document.getElementById('report-4-percentage').innerText = `${percentage}%`;
+
+            const breakdownContainer = document.getElementById('report-4-breakdown');
+            let breakdownHtml = '';
+
+            SPEAKING_DATA.forEach(item => {
+                const status = state.speakingScores[item.id] === 1;
+                const cardEl = document.getElementById(`p4-card-${item.id}`);
+                let heardText = "No audio recorded yet.";
+                if (cardEl && !cardEl.classList.contains('hidden')) {
+                    const textMatch = cardEl.innerHTML.match(/We heard:\s*<span[^>]*>"([^"]*)"<\/span>/);
+                    if (textMatch) heardText = textMatch[1];
+                }
+
+                breakdownHtml += `
+                    <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-200">Item ${item.id}: "${item.audioText}"</span>
+                            <span class="${status ? 'text-emerald-400 font-bold' : 'text-amber-400 font-semibold'}">${status ? '✅ Accurate (100%)' : '💡 Practice Needed'}</span>
+                        </div>
+                        <div class="text-xs text-slate-400 font-mono">Audio Heard: <span class="text-amber-300">"${heardText}"</span></div>
+                        <div class="text-xs text-slate-400">Target Response: <span class="text-emerald-400">${item.targetStructure}</span></div>
+                    </div>
+                `;
+            });
+
+            breakdownContainer.innerHTML = breakdownHtml;
+            openModal('modal-report-4');
+        }
+
+        function updateHeaderStudentBadge() {
+            const badge = document.getElementById('header-student-badge');
+            const nameEl = document.getElementById('header-student-name');
+            if (state.student123.name) {
+                nameEl.innerText = state.student123.name;
+                badge.classList.remove('hidden');
+            }
+        }
+
+        /* =========================================================================
+           INITIALIZATION & DOM GENERATION
+           ========================================================================= */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderReadingItems();
+            renderWritingItems();
+            renderSpeakingItems();
+            updateScoreDisplays();
+        });
+
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md', 'shadow-brand-600/20');
+                btn.classList.add('text-slate-400', 'hover:text-slate-200');
+            });
+
+            const activeContent = document.getElementById(tabId);
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+
+            if (activeContent) activeContent.classList.add('active');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400', 'hover:text-slate-200');
+                activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-md', 'shadow-brand-600/20');
+            }
+
+            if (tabId === 'summary') {
+                renderSummaryCertificate();
+            }
+        }
+
+        /* =========================================================================
+           PHASE 2: READING IMPLEMENTATION
+           ========================================================================= */
+        function renderReadingItems() {
+            const container = document.getElementById('reading-items-container');
+            container.innerHTML = READING_DATA.map((item, index) => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                        <span class="text-xs font-mono text-brand-400 font-semibold uppercase">Item ${index + 1} of 8</span>
+                        <div id="p2-status-${item.id}" class="text-xs font-semibold text-slate-400">Not Answered</div>
+                    </div>
+                    
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/90 text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                        <i class="fa-solid fa-quote-left text-brand-500/40 mr-2"></i> ${item.dialogue}
+                    </div>
+
+                    <p class="font-semibold text-slate-100 text-sm sm:text-base">${item.question}</p>
+
+                    <div class="space-y-2.5">
+                        ${item.options.map((option, optIdx) => `
+                            <button onclick="checkReadingAnswer(${item.id}, ${optIdx})" id="p2-opt-${item.id}-${optIdx}" class="w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800/80 text-sm text-slate-300 transition-all flex items-center justify-between group">
+                                <span>${option}</span>
+                                <i class="fa-regular fa-circle text-slate-400 group-hover:text-brand-400"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="p2-feedback-${item.id}" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-1"></div>
+                </div>
+            `).join('');
+        }
+
+        function checkReadingAnswer(itemId, selectedIdx) {
+            const item = READING_DATA.find(i => i.id === itemId);
+            const isCorrect = selectedIdx === item.correctIndex;
+
+            state.readingScores[itemId] = isCorrect ? 1 : 0;
+            updateScoreDisplays();
+
+            // Highlight buttons
+            item.options.forEach((_, optIdx) => {
+                const btn = document.getElementById(`p2-opt-${itemId}-${optIdx}`);
+                btn.disabled = true;
+                btn.className = "w-full text-left p-3.5 rounded-xl border text-sm transition-all flex items-center justify-between opacity-70";
+                
+                if (optIdx === item.correctIndex) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-emerald-500/50 bg-emerald-500/10 text-emerald-300 font-medium text-sm flex items-center justify-between";
+                    btn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-400";
+                } else if (optIdx === selectedIdx && !isCorrect) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-rose-500/50 bg-rose-500/10 text-rose-300 text-sm flex items-center justify-between";
+                    btn.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-400";
+                }
+            });
+
+            // Status Badge
+            const statusBadge = document.getElementById(`p2-status-${itemId}`);
+            if (isCorrect) {
+                statusBadge.className = "text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20";
+                statusBadge.innerText = "✅ Correct (+1)";
+                playTone(600, 'sine', 0.15);
+            } else {
+                statusBadge.className = "text-xs font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-md border border-rose-500/20";
+                statusBadge.innerText = "💡 Review Needed";
+                playTone(250, 'sawtooth', 0.2);
+            }
+
+            // Feedback Card
+            const fbContainer = document.getElementById(`p2-feedback-${itemId}`);
+            fbContainer.classList.remove('hidden');
+            fbContainer.className = `p-4 rounded-xl text-xs sm:text-sm border ${isCorrect ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-200' : 'bg-amber-950/40 border-amber-500/30 text-amber-200'}`;
+            fbContainer.innerHTML = `
+                <div class="font-bold flex items-center gap-2 mb-1">
+                    ${isCorrect ? '[✅ EXCELLENT!]' : '[💡 ALMOST THERE!]'}
+                </div>
+                <p>${item.explanation}</p>
+            `;
+        }
+
+        /* =========================================================================
+           PHASE 3: WRITING IMPLEMENTATION & PARSER ENGINE
+           ========================================================================= */
+        function renderWritingItems() {
+            const container = document.getElementById('writing-items-container');
+            container.innerHTML = WRITING_DATA.map((item, index) => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-mono text-brand-400 font-semibold uppercase">Writing Task ${index + 1} of 8</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">${item.prompt}</span>
+                        </div>
+                        <div id="p3-status-${item.id}" class="text-xs font-semibold text-slate-400">Pending Input</div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <p class="text-xs text-slate-400">Prompt cues:</p>
+                        <p class="font-mono text-sm sm:text-base font-semibold text-amber-300 bg-slate-950 p-3 rounded-xl border border-slate-800">${item.cues}</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs text-slate-400">Type your full sentence below:</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="p3-input-${item.id}" placeholder="Type full sentence here..." class="flex-1 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-400 outline-none transition-all">
+                            <button onclick="evaluateWritingItem(${item.id})" class="px-5 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-sm transition-all shadow-md shadow-brand-600/20 whitespace-nowrap">
+                                Check Grammar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI Feedback Card Standard Format -->
+                    <div id="p3-card-${item.id}" class="hidden space-y-3 p-4 rounded-xl border text-sm">
+                        <!-- Dynamic Evaluation Results -->
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function evaluateWritingItem(itemId) {
+            const item = WRITING_DATA.find(i => i.id === itemId);
+            const userInput = document.getElementById(`p3-input-${itemId}`).value.trim();
+
+            if (!userInput) {
+                alert("Please type a sentence before checking.");
+                return;
+            }
+
+            const card = document.getElementById(`p3-card-${itemId}`);
+            const statusBadge = document.getElementById(`p3-status-${itemId}`);
+
+            // Perform grammar evaluation using pedagogical rules + optional Gemini API grounding
+            const evaluation = analyzeSentenceGrammar(userInput, item);
+
+            state.writingScores[itemId] = evaluation.isExcellent ? 1 : 0;
+            updateScoreDisplays();
+
+            if (evaluation.isExcellent) {
+                statusBadge.className = "text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20";
+                statusBadge.innerText = "✅ Excellent (+1)";
+                playTone(600, 'sine', 0.15);
+            } else {
+                statusBadge.className = "text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20";
+                statusBadge.innerText = "💡 Practice Needed";
+                playTone(300, 'sawtooth', 0.2);
+            }
+
+            card.classList.remove('hidden');
+            card.className = `p-4 rounded-xl border ${evaluation.isExcellent ? 'bg-emerald-950/30 border-emerald-500/30' : 'bg-slate-950 border-amber-500/30'}`;
+
+            card.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <span class="font-bold text-base ${evaluation.isExcellent ? 'text-emerald-400' : 'text-amber-400'}">
+                        Result Status: ${evaluation.isExcellent ? '[✅ EXCELLENT!]' : '[💡 ALMOST THERE!]'}
+                    </span>
+                    <span class="text-xs text-slate-400">A2 Grammar Check</span>
+                </div>
+
+                ${!evaluation.isExcellent ? `
+                    <div class="text-sm">
+                        <span class="text-slate-400">Target Correction: </span>
+                        <span class="font-semibold text-emerald-400">${item.sampleAnswer}</span>
+                    </div>
+                ` : ''}
+
+                <div class="space-y-2 pt-1 text-xs sm:text-sm">
+                    <p class="font-semibold text-slate-300">Pedagogical Checklist:</p>
+                    <ul class="space-y-1 text-slate-300">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid ${evaluation.auxiliaryOk ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
+                            <span><strong>Auxiliary:</strong> ${evaluation.auxiliaryNote}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid ${evaluation.adverbOk ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
+                            <span><strong>Adverb Position:</strong> ${evaluation.adverbNote}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid ${evaluation.v3Ok ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
+                            <span><strong>Verb Form (V3):</strong> ${evaluation.v3Note}</span>
+                        </li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        /* Rule-based A2 Grammar Parser for instant, robust feedback */
+        function analyzeSentenceGrammar(text, item) {
+            const cleanText = text.toLowerCase().trim();
+            const words = cleanText.split(/\s+/);
+            
+            let isExactPattern = item.targetPattern.test(cleanText);
+
+            // Auxiliary Check
+            const hasHave = cleanText.includes("have") || cleanText.includes("'ve") || cleanText.includes("haven't");
+            const hasHas = cleanText.includes("has");
+            const hasDid = cleanText.includes("did");
+            const auxiliaryOk = hasHave && !hasDid;
+            let auxiliaryNote = auxiliaryOk ? "Correct auxiliary 'have' used." : (hasDid ? "Do not use 'did' for present perfect experiences." : "Missing correct auxiliary 'have'.");
+
+            // Adverb Position
+            const hasEver = cleanText.includes("ever");
+            const hasNever = cleanText.includes("never");
+            let adverbOk = true;
+            let adverbNote = "Valid adverb placement.";
+
+            if (item.type === "question") {
+                adverbOk = cleanText.includes("have you ever");
+                adverbNote = adverbOk ? "'ever' placed correctly after subject ('Have you ever...')" : "Place 'ever' directly after 'you' (e.g. 'Have you ever...')";
+            } else if (item.type === "negative") {
+                adverbOk = cleanText.includes("have never") || cleanText.includes("'ve never");
+                adverbNote = adverbOk ? "'never' placed directly after 'have'." : "Place 'never' directly after 'have' (e.g., 'I have never...')";
+            }
+
+            // V3 Verb Check
+            const targetV3s = ["visited", "ridden", "spoken", "lost", "cooked", "broken", "slept", "driven"];
+            let foundV3 = targetV3s.some(v => cleanText.includes(v));
+            let v3Ok = foundV3 || isExactPattern;
+            let v3Note = v3Ok ? "Accurate Past Participle (V3) verb form used." : "Ensure you use the Past Participle V3 form (e.g., ridden, spoken, broken, slept).";
+
+            let isExcellent = isExactPattern || (auxiliaryOk && adverbOk && v3Ok);
+
+            return {
+                isExcellent,
+                auxiliaryOk,
+                auxiliaryNote,
+                adverbOk,
+                adverbNote,
+                v3Ok,
+                v3Note
+            };
+        }
+
+        /* =========================================================================
+           PHASE 4: SPEAKING STUDIO (AUDIO TTS & WEB SPEECH RECORDING)
+           ========================================================================= */
+        function renderSpeakingItems() {
+            const container = document.getElementById('speaking-items-container');
+            container.innerHTML = SPEAKING_DATA.map((item, index) => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-mono text-amber-400 font-semibold uppercase">Speaking Prompt ${index + 1} of 8</span>
+                        </div>
+                        <div id="p4-status-${item.id}" class="text-xs font-semibold text-slate-400">Audio Pending</div>
+                    </div>
+
+                    <!-- Audio Question Box -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="space-y-1 text-center sm:text-left">
+                            <span class="text-xs text-slate-400 uppercase font-mono">Audio Prompt Question:</span>
+                            <p class="font-bold text-slate-100 text-base sm:text-lg text-indigo-300 font-mono">"${item.audioText}"</p>
+                        </div>
+                        <button onclick="playQuestionAudio('${item.audioText.replace(/'/g, "\\'")}')" class="px-4 py-2.5 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 border border-indigo-500/40 font-semibold rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 whitespace-nowrap">
+                            <i class="fa-solid fa-volume-high"></i> Listen to Question
+                        </button>
+                    </div>
+
+                    <div class="text-xs text-slate-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bullseye text-brand-400"></i> Expected Answer Pattern:
+                        <span class="text-slate-300 font-medium">${item.targetStructure}</span>
+                    </div>
+
+                    <!-- Voice Recorder Widget Blueprint -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+                        <button onclick="toggleRecordAnswer(${item.id})" id="p4-rec-btn-${item.id}" class="w-full sm:w-auto px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-rose-600/20">
+                            <i class="fa-solid fa-microphone"></i>
+                            <span id="p4-rec-label-${item.id}">Record Answer</span>
+                        </button>
+                        
+                        <div class="flex-1 text-xs text-slate-400 text-center sm:text-left">
+                            <span id="p4-mic-status-${item.id}">Click "Record Answer" and speak clearly into your microphone.</span>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time AI Speaking Feedback Card -->
+                    <div id="p4-card-${item.id}" class="hidden space-y-3 p-4 rounded-xl border text-sm">
+                        <!-- Transcribed Speech and Evaluation Output -->
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* Web Speech API Audio Question Synthesizer */
+        function playQuestionAudio(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9; // Standard clear rate for A2 learners
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Speech Synthesis is not supported in your browser.");
+            }
+        }
+
+        /* Web Speech API Voice Recognition Handler */
+        let recognition = null;
+
+        function toggleRecordAnswer(itemId) {
+            const recBtn = document.getElementById(`p4-rec-btn-${itemId}`);
+            const recLabel = document.getElementById(`p4-rec-label-${itemId}`);
+            const micStatus = document.getElementById(`p4-mic-status-${itemId}`);
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            if (!SpeechRecognition) {
+                alert("Web Speech Recognition is not supported by your browser. You can type your spoken answer manually in the prompt fallback.");
+                const fallbackSpeech = prompt("Speech API unavailable. Type what you would say:");
+                if (fallbackSpeech) processSpokenTranscript(itemId, fallbackSpeech);
+                return;
+            }
+
+            if (state.recordingIndex === itemId) {
+                // Stop recording
+                if (recognition) recognition.stop();
+                return;
+            }
+
+            // Stop previous active recording
+            if (recognition) {
+                try { recognition.stop(); } catch(e){}
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            state.recordingIndex = itemId;
+            recBtn.className = "w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 animate-recording";
+            recLabel.innerText = "Listening... (Click to Stop)";
+            micStatus.innerText = "🎙️ Listening... Say: 'Yes, I have...' or 'No, I have never...'";
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                processSpokenTranscript(itemId, transcript);
+            };
+
+            recognition.onerror = (event) => {
+                micStatus.innerText = `Recording error: ${event.error}. Please try again.`;
+                resetRecordingButton(itemId);
+            };
+
+            recognition.onend = () => {
+                resetRecordingButton(itemId);
+            };
+
+            recognition.start();
+        }
+
+        function resetRecordingButton(itemId) {
+            state.recordingIndex = null;
+            const recBtn = document.getElementById(`p4-rec-btn-${itemId}`);
+            const recLabel = document.getElementById(`p4-rec-label-${itemId}`);
+            if (recBtn && recLabel) {
+                recBtn.className = "w-full sm:w-auto px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-rose-600/20";
+                recLabel.innerText = "Record Answer";
+            }
+        }
+
+        /* Pedagogical Feedback Generator for Spoken Response */
+        function processSpokenTranscript(itemId, transcript) {
+            const item = SPEAKING_DATA.find(i => i.id === itemId);
+            const statusBadge = document.getElementById(`p4-status-${itemId}`);
+            const micStatus = document.getElementById(`p4-mic-status-${itemId}`);
+            const card = document.getElementById(`p4-card-${itemId}`);
+
+            micStatus.innerText = "Speech captured successfully!";
+
+            const cleanSpeech = transcript.toLowerCase().trim();
+
+            // A2 Grammar Checks for Speaking
+            const hasHave = cleanSpeech.includes("have") || cleanSpeech.includes("'ve") || cleanSpeech.includes("haven't");
+            const hasNever = cleanSpeech.includes("never");
+            const hasYes = cleanSpeech.includes("yes");
+            const hasNo = cleanSpeech.includes("no");
+            const hasV3 = cleanSpeech.includes(item.v3Check);
+
+            const isAuxiliaryOk = hasHave;
+            const isAdverbOk = !hasNo || hasNever || cleanSpeech.includes("haven't");
+            const isV3Ok = hasV3 || cleanSpeech.includes("yes, i have") || cleanSpeech.includes("no, i haven't");
+
+            const isExcellent = isAuxiliaryOk && (hasYes || hasNo || hasNever) && isV3Ok;
+
+            state.speakingScores[itemId] = isExcellent ? 1 : 0;
+            updateScoreDisplays();
+
+            if (isExcellent) {
+                statusBadge.className = "text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20";
+                statusBadge.innerText = "✅ Spoken (+1)";
+                playTone(700, 'sine', 0.15);
+            } else {
+                statusBadge.className = "text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20";
+                statusBadge.innerText = "💡 Practice Spoken";
+                playTone(320, 'sawtooth', 0.2);
+            }
+
+            card.classList.remove('hidden');
+            card.className = `p-5 rounded-xl border space-y-3 ${isExcellent ? 'bg-emerald-950/30 border-emerald-500/30' : 'bg-slate-950 border-amber-500/30'}`;
+
+            card.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <span class="font-bold text-base ${isExcellent ? 'text-emerald-400' : 'text-amber-400'}">
+                        Result Status: ${isExcellent ? '[✅ EXCELLENT!]' : '[💡 ALMOST THERE!]'}
+                    </span>
+                    <span class="text-xs font-mono text-slate-400">Audio Voice Analysis</span>
+                </div>
+
+                <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 text-sm font-mono text-slate-200">
+                    We heard: <span class="text-amber-300 font-semibold">"${transcript}"</span>
+                </div>
+
+                ${!isExcellent ? `
+                    <div class="text-sm">
+                        <span class="text-slate-400">Target Correction: </span>
+                        <span class="font-semibold text-emerald-400">${item.targetStructure}</span>
+                    </div>
+                ` : ''}
+
+                <div class="space-y-2 text-xs sm:text-sm">
+                    <p class="font-semibold text-slate-300">A2 Grammar Checks:</p>
+                    <ul class="space-y-1 text-slate-300">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid ${isAuxiliaryOk ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
+                            <span>1. <strong>Auxiliary:</strong> ${isAuxiliaryOk ? "Correct use of 'have / haven't' auxiliary." : "Ensure you include 'have' or 'haven't'."}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid ${isAdverbOk ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
+                            <span>2. <strong>Adverb Position:</strong> ${isAdverbOk ? "'never' placed correctly directly after 'have'." : "Place 'never' directly after 'have' (e.g. 'I have never...')."}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid ${isV3Ok ? 'fa-check text-emerald-400' : 'fa-xmark text-rose-400'}"></i>
+                            <span>3. <strong>Verb Form (V3):</strong> ${isV3Ok ? `Correct Past Participle V3 form '${item.v3Check}'.` : `Include the V3 past participle '${item.v3Check}'.`}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pt-2 border-t border-slate-800/80 text-xs text-indigo-300 flex items-center gap-2">
+                    <i class="fa-solid fa-comments"></i>
+                    <span><strong>Pronunciation Note:</strong> Practice native contractions like saying <strong>"I've"</strong> instead of <em>"I have"</em> in negative sentences, and keep strong accent stress on <strong>NEVER</strong>.</span>
+                </div>
+            `;
+        }
+
+        /* =========================================================================
+           SUMMARY & SCORE TRACKING UTILITIES
+           ========================================================================= */
+        function updateScoreDisplays() {
+            const readScore = Object.values(state.readingScores).reduce((a, b) => a + b, 0);
+            const writeScore = Object.values(state.writingScores).reduce((a, b) => a + b, 0);
+            const speakScore = Object.values(state.speakingScores).reduce((a, b) => a + b, 0);
+
+            const totalScore = readScore + writeScore + speakScore;
+
+            document.getElementById('total-score-display').innerText = totalScore;
+            document.getElementById('p2-progress-count').innerText = Object.keys(state.readingScores).length;
+            document.getElementById('p3-progress-count').innerText = Object.keys(state.writingScores).length;
+            document.getElementById('p4-progress-count').innerText = Object.keys(state.speakingScores).length;
+        }
+
+        function renderSummaryCertificate() {
+            const readScore = Object.values(state.readingScores).reduce((a, b) => a + b, 0);
+            const writeScore = Object.values(state.writingScores).reduce((a, b) => a + b, 0);
+            const speakScore = Object.values(state.speakingScores).reduce((a, b) => a + b, 0);
+
+            const readEl = document.getElementById('summary-reading-score');
+            const writeEl = document.getElementById('summary-writing-score');
+            const speakEl = document.getElementById('summary-speaking-score');
+            const textEl = document.getElementById('certificate-eval-text');
+
+            if (readEl) readEl.innerText = `${readScore} / 8`;
+            if (writeEl) writeEl.innerText = `${writeScore} / 8`;
+            if (speakEl) speakEl.innerText = `${speakScore} / 8`;
+
+            const total = readScore + writeScore + speakScore;
+            if (textEl) {
+                if (total >= 20) {
+                    textEl.innerHTML = "<strong class='text-emerald-400'>Outstanding Achievement!</strong> You have demonstrated fluent mastery of A2 Present Perfect structures for life experiences.";
+                } else if (total >= 12) {
+                    textEl.innerHTML = "<strong class='text-amber-400'>Great Progress!</strong> You are well on your way. Review missed items in Writing or Speaking to refine your V3 verb forms.";
+                } else {
+                    textEl.innerHTML = "Keep practicing! Return to Phase 1 Grammar Formulas and complete all 8 items in each stage.";
+                }
+            }
+        }
+
+        function resetAllProgress() {
+            state.readingScores = {};
+            state.writingScores = {};
+            state.speakingScores = {};
+            updateScoreDisplays();
+            renderReadingItems();
+            renderWritingItems();
+            renderSpeakingItems();
+            switchTab('phase1');
+        }
+
+        /* Web Audio API Tone Generator for Instant Interactive Feedback */
+        function playTone(freq, type, duration) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch(e) {}
+        }
+    </script>
+</body>
+</html>
